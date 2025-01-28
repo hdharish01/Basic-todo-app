@@ -13,12 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model todo {
-  id Int @id @default(autoincrement())
-  title String
-  completed Boolean @default(false)
-}
-
 model User {
   id            String          @id @default(cuid())
   name          String?
@@ -29,11 +23,20 @@ model User {
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+  todos Todo[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
+model Todo {
+  id Int @id @default(autoincrement())
+  title String
+  completed Boolean @default(false)
+  userId String
+  user User @relation(fields: [userId], references: [id])
+}
+
 model Account {
   userId            String
   type              String
