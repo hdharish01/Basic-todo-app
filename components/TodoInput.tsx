@@ -1,5 +1,7 @@
 "use client"
 
+import { createTodo } from "@/actions/createTodo"
+import { signIn } from "next-auth/react"
 import { useState } from "react"
 
 export function TodoInput(){
@@ -8,7 +10,12 @@ export function TodoInput(){
         <div>
             <div className="mt-5 ml-4">
                 <input type="text" placeholder="Enter todo" className="mt-1 w-80 p-2 border rounded-lg" onChange={(e) => setCurrentTodo(e.target.value)}></input>
-                <button className="mx-4 p-2 bg-radial-[at_50%_75%] from-sky-200 via-teal-400 to-slate-700 to-98% rounded-xl px-6">Add</button>
+                <button className="mx-4 p-2 text-white bg-gradient-to-br from-teal-800 to-teal-400 rounded-xl px-6 hover:bg-gradient-to-r cursor-pointer" onClick={async ()=>{
+                    const res = await createTodo(currentTodo)
+                    if(res === null){
+                        signIn()
+                    } 
+                }}>Add</button>
             </div>
         </div>
     )
