@@ -2,15 +2,25 @@
 
 import { auth } from "@/auth"
 import { prisma } from "@/prisma"
-import { NextResponse } from "next/server"
 
 export async function returnUserTodos(){
-    const session =  await auth()
-    const userTodos = await prisma.todo.findMany({
-        where:{
-            userId: session?.user?.id
-        }
-    })
-    return userTodos
+    try{
+        const session =  await auth()
+        const userId = session?.user?.id
 
+        if(!userId){
+            throw new Error("user not authenticated")
+        }
+
+        const userTodos = await prisma.todo.findMany({
+            where:{
+                userId: userId,
+                completed: false
+            }
+        })
+        return userTodos    
+    }catch(error){
+        console.error("error fetching todos",error);
+        return [];
+    }
 }

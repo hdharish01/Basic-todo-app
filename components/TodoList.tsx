@@ -2,6 +2,9 @@
 
 import { returnUserTodos } from "@/actions/returnUserTodos"
 import { useEffect, useState } from "react"
+import { SkeletonLoader } from "./SkeletonLoader";
+import { TickButton } from "./TickButton";
+import { taskDone } from "@/actions/taskDone";
 
 interface Todo {
     id: number;
@@ -10,9 +13,10 @@ interface Todo {
     userId:string;
 }
 
-export function TodoList(){
+export function TodoList({ currentTodo }:any){
     const [todos, setTodos] = useState<Todo[]>([])
     const [loading, setLoading] = useState(true)
+    const [flag, setFlag] = useState(0)
 
     useEffect(()=>{
         async function getTodos() {
@@ -28,19 +32,25 @@ export function TodoList(){
             }
         }
         getTodos()
-    },[])
+    },[flag, currentTodo])
 
     if(loading){
-        return <div className="">
-            loading...
+        return <div className="space-y-4 mt-10 justify-self-center">
+            <SkeletonLoader />
+            <SkeletonLoader />
         </div>
     }
 
     return(
-        <div>
+        <div className="mt-10">
             {todos.map((todo)=>{
-                return <div key={todo.id}>
-                    <div>{todo.title}</div>
+                return <div key={todo.id} className="flex justify-center">
+                    <div className="my-2 border-2 rounded-full px-4 p-2 ml-4 max-w-100 text-slate-800 border-gray-400">{todo.title}</div>
+                    <TickButton onClick={async ()=>{
+                        //task done action
+                        await taskDone(todo.id)
+                        setFlag(s => s+1)
+                    }}></TickButton>
                 </div>
             })}
         </div>
