@@ -5,7 +5,6 @@ import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { TodoList } from "@/components/TodoList";
 import { useRouter } from "next/navigation";
-import { TodoInput } from "@/components/TodoInput";
 
 
 
@@ -28,7 +27,6 @@ export default function Home() {
             }}>Add</button>
         </div>
       </div>
-      {/* <TodoInput /> */}
       <TodoList currentTodo={currentTodo}/>
     </div>
   );

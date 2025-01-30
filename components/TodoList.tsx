@@ -13,7 +13,7 @@ interface Todo {
     userId:string;
 }
 
-export function TodoList({ currentTodo }:any){
+export function TodoList({ currentTodo }:{ currentTodo:string }){
     const [todos, setTodos] = useState<Todo[]>([])
     const [loading, setLoading] = useState(true)
     const [flag, setFlag] = useState(0)
