@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { TodoList } from "@/components/TodoList";
 import { useRouter } from "next/navigation";
+import { CompletedTodoList } from "@/components/CompletedTodoList";
 
 
 
@@ -28,6 +29,7 @@ export default function Home() {
         </div>
       </div>
       <TodoList currentTodo={currentTodo}/>
+      <CompletedTodoList />
     </div>
   );
 }

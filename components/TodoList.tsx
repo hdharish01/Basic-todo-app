@@ -6,7 +6,7 @@ import { SkeletonLoader } from "./SkeletonLoader";
 import { TickButton } from "./TickButton";
 import { taskDone } from "@/actions/taskDone";
 
-interface Todo {
+export interface Todo {
     id: number;
     title:string;
     completed:boolean;
