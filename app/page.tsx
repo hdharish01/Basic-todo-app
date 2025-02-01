@@ -4,15 +4,10 @@ import { createTodo } from "@/actions/createTodo"
 import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { TodoList } from "@/components/TodoList";
-import { useRouter } from "next/navigation";
-import { CompletedTodoList } from "@/components/CompletedTodoList";
-
-
 
 export default function Home() {
   const [currentTodo, setCurrentTodo] = useState("")
   const [todoToBeAdded, setTodoToBeAdded] = useState("")
-  const router = useRouter()
 
   const createTodoButtonHandler = async () => {
     if(!currentTodo.trim()) return;
