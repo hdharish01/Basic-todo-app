@@ -7,7 +7,7 @@ import { DeleteButton } from "./DeleteButton"
 import { deleteTodo } from "@/actions/deleteTodo"
 
 
-export function CompletedTodoList(){
+export function CompletedTodoList({completedTodoId}:{completedTodoId:number}){
     const [completedTodos,setCompletedTodos] = useState<Todo[]>([])
     const [open, setOpen] = useState(false)
 
@@ -24,7 +24,10 @@ export function CompletedTodoList(){
             }
         }
         getCompletedTodos()
-    },[])
+    },[completedTodoId])
+
+
+
 
     const deleteButtonHandler = async (todoId:number) => {
         try{

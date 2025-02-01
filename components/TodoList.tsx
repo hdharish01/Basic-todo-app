@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { SkeletonLoader } from "./SkeletonLoader";
 import { TickButton } from "./TickButton";
 import { taskDone } from "@/actions/taskDone";
+import { CompletedTodoList } from "./CompletedTodoList";
 
 export interface Todo {
     id: number;
@@ -13,10 +14,10 @@ export interface Todo {
     userId:string;
 }
 
-export function TodoList({ currentTodo }:{ currentTodo:string }){
+export function TodoList({ todoToBeAdded }:{ todoToBeAdded:string }){
     const [todos, setTodos] = useState<Todo[]>([])
     const [loading, setLoading] = useState(true)
-    const [flag, setFlag] = useState(0)
+    const [completedTodoId, setCompletedTodoId] = useState(0)
 
     useEffect(()=>{
         async function getTodos() {
@@ -32,7 +33,22 @@ export function TodoList({ currentTodo }:{ currentTodo:string }){
             }
         }
         getTodos()
-    },[flag, currentTodo])
+    },[todoToBeAdded])
+
+    
+
+    const tickButtonHandler = async (todoId: number) =>{
+        try{
+            const response = await taskDone(todoId);
+            if(response === "done"){
+                setTodos((prevTodos) => prevTodos.filter(todo => todo.id != todoId))
+                setCompletedTodoId(todoId)
+            }
+
+        }catch(error){
+            console.error("error while taskDone function",error)
+        }
+    }
 
     if(loading){
         return <div className="space-y-4 mt-10 justify-self-center">
@@ -42,17 +58,18 @@ export function TodoList({ currentTodo }:{ currentTodo:string }){
     }
 
     return(
-        <div className="mt-10">
-            {todos.map((todo)=>{
-                return <div key={todo.id} className="flex justify-center">
-                    <div className="my-2 border-2 rounded-full px-4 p-2 ml-4 max-w-100 text-slate-800 border-gray-400">{todo.title}</div>
-                    <TickButton onClick={async ()=>{
-                        //task done action
-                        await taskDone(todo.id)
-                        setFlag(s => s+1)
-                    }}></TickButton>
-                </div>
-            })}
+        <div>
+            <div className="mt-10">
+                {todos.map((todo)=>{
+                    return <div key={todo.id} className="flex justify-center">
+                        <div className="my-2 border-2 rounded-full px-4 p-2 ml-4 max-w-100 text-slate-800 border-gray-400">{todo.title}</div>
+                        <TickButton onClick={async ()=>{
+                            tickButtonHandler(todo.id)
+                        }}></TickButton>
+                    </div>
+                })}
+            </div>
+            <CompletedTodoList completedTodoId={completedTodoId}></CompletedTodoList>
         </div>
     )
 }
