@@ -29,7 +29,7 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-gradient-to-r from-teal-200 to-slate-300 w-screen h-screen">
+    <div className="bg-gradient-to-r from-teal-200 to-slate-300 w-screen min-h-screen">
       <div>
         <div className="pt-5 ml-4 flex justify-center">
             <input type="text" placeholder="Enter todo" className="mt-1 w-80 p-2 border rounded-lg" value={currentTodo} onChange={(e) => setCurrentTodo(e.target.value)} onKeyDown={(e)=>{if (e.key === "Enter"){createTodoButtonHandler()}}}></input>
