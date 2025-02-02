@@ -6,6 +6,7 @@ import { SkeletonLoader } from "./SkeletonLoader";
 import { TickButton } from "./TickButton";
 import { taskDone } from "@/actions/taskDone";
 import { CompletedTodoList } from "./CompletedTodoList";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface Todo {
     id: number;
@@ -60,14 +61,27 @@ export function TodoList({ todoToBeAdded }:{ todoToBeAdded:string }){
     return(
         <div>
             <div className="mt-10">
-                {todos.map((todo)=>{
-                    return <div key={todo.id} className="flex justify-center">
-                        <div className="my-2 border-2 rounded-full px-4 p-2 ml-4 max-w-100 text-slate-800 border-gray-400">{todo.title}</div>
-                        <TickButton onClick={async ()=>{
-                            tickButtonHandler(todo.id)
-                        }}></TickButton>
-                    </div>
-                })}
+                <AnimatePresence>
+                    {todos.map((todo)=>{
+                        return (
+                            <motion.div 
+                                key={todo.id}
+                                className="flex justify-center"
+                                initial={{ opacity: 0, y: -20, scale: 0.9 }} // Start slightly above and small
+                                animate={{ opacity: 1, y: 0, scale: 1 }} // Fade in, move down, and grow
+                                exit={{ opacity: 0, scale: 0.8, y: 20 }} // Fade out, shrink, and move down
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                            >
+                                <div key={todo.id} className="flex justify-center">
+                                    <div className="my-2 border-2 rounded-full px-4 p-2 ml-4 max-w-100 text-slate-800 border-gray-400">{todo.title}</div>
+                                    <TickButton onClick={async ()=>{
+                                        tickButtonHandler(todo.id)
+                                    }}></TickButton>
+                                </div>
+                            </motion.div>
+                        )
+                    })}
+                </AnimatePresence>
             </div>
             <CompletedTodoList completedTodoId={completedTodoId}></CompletedTodoList>
         </div>

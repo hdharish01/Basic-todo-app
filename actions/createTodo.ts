@@ -6,7 +6,7 @@ import { prisma } from "@/prisma"
 export async function createTodo(title:string) {
     
     //add zod validation here
-
+    
     const session = await auth()
 
     if(!session?.user){
